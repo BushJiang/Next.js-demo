@@ -1,0 +1,98 @@
+/* =================================================================
+   全局样式配置文件 - 新手使用指南
+   =================================================================
+   这个文件控制整个应用的全局样式和颜色主题。
+
+   主要作用：
+   1. 定义整个应用的默认颜色主题
+   2. 支持深色模式切换
+   3. 配置字体样式
+
+   使用方法：
+   - 修改下方的颜色值来改变应用的主题
+   - 在组件中使用 Tailwind 类名（如 bg-background, text-foreground）
+   - 深色模式会自动根据用户系统设置切换
+
+   注意事项：
+   - 颜色值使用十六进制格式（如 #ffffff 表示白色）
+   - 修改后需要重启开发服务器生效
+
+   使用示例：
+   <div className="bg-background text-foreground">我的内容</div>
+   这会自动使用我们定义的主题颜色，并支持深色模式切换
+   ================================================================= */
+
+/* 导入 Tailwind CSS 框架 - 不要删除这行 */
+@import "tailwindcss";
+
+/* 定义颜色主题变量 - 可以修改这里的颜色值
+   浅色模式下的主题颜色 */
+:root {
+  --background: #ffffff;  /* 页面背景色 - 白色 */
+  --foreground: #171717;  /* 文字颜色 - 深黑色 */
+}
+
+/* 将颜色变量映射到 Tailwind 类名 - 让 Tailwind 可以使用我们定义的颜色 */
+@theme inline {
+  --color-background: var(--background);  /* 映射为 Tailwind 的 bg-background */
+  --color-foreground: var(--foreground);  /* 映射为 Tailwind 的 text-foreground */
+  --font-sans: var(--font-geist-sans);    /* 映射为 Tailwind 的 font-sans */
+  --font-mono: var(--font-geist-mono);    /* 映射为 Tailwind 的 font-mono */
+}
+
+/* 深色模式配置 - 当用户系统设置为深色模式时使用这些颜色 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;  /* 深色模式下的背景色（深黑色） */
+    --foreground: #ededed;  /* 深色模式下的文字颜色（浅灰色） */
+  }
+}
+
+/* 全局页面样式 - 控制整个页面的背景、文字和字体 */
+body {
+  background: var(--background);                /* 使用主题背景色 */
+  color: var(--foreground);                     /* 使用主题文字色 */
+  font-family: Arial, Helvetica, sans-serif;    /* 设置默认字体 */
+}
+
+/*
+   字体回退机制说明：
+   1. 首选 Arial（Windows常见）
+   2. 回退 Helvetica（macOS常见）
+   3. 最后使用系统默认无衬线字体sans-serif（Linux/Android等）
+
+   优先级：系统有 Arial → 用 Arial；没有 Arial 有 Helvetica → 用 Helvetica；
+          都没有 → 用系统默认的无衬线字体
+
+   ⚠️ 注意：sans-serif 不是具体字体！
+   - sans-serif 是"通用字体族"，代表所有无衬线字体
+   - 它会让浏览器选择系统默认的无衬线字体
+   - 不同系统的默认字体不同：
+     * Windows: 微软雅黑、黑体
+     * macOS: Helvetica Neue
+     * Linux: DejaVu Sans
+     * Android: Roboto
+
+   如何查看当前使用哪种字体：
+   - 按 F12 打开浏览器开发者工具
+   - 选择 Elements → <body> 元素
+   - 在右侧 Styles 中查看 font-family，实际应用的字体会被划掉
+*/
+
+/*
+   字体使用指南：
+
+   1. 自动继承（推荐）：
+      - 所有组件默认继承 body 的字体
+      - 无需添加任何类名，直接使用即可
+      - 示例：<p>这段文字会自动使用全局字体</p>
+
+   2. 使用 Tailwind 类名：
+      - 在组件中使用 className="font-sans"
+      - 这会使用 @theme inline 中定义的字体
+      - 示例：<h1 className="text-2xl font-sans">标题</h1>
+
+   3. 强制使用全局字体：
+      - 如果需要确保使用全局字体，可以添加 font-sans 类名
+      - 示例：<div className="font-sans">内容</div>
+*/
